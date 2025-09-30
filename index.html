@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase - E-Commerce</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+        
+        /* Authentication Styles */
+        .auth-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .auth-form {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 6px 32px rgba(52, 152, 219, 0.13);
+            width: 350px;
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+        }
+        
+        .auth-form h2 {
+            text-align: center;
+            color: #2575fc;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            font-size: 1rem;
+            color: #555;
+        }
+        
+        .form-group input {
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border 0.2s;
+        }
+        
+        .form-group input:focus {
+            border-color: #2575fc;
+            outline: none;
+        }
+        
+        .forgot-password {
+            text-align: right;
+            margin-top: 0.2rem;
+        }
+        
+        .forgot-password a {
+            color: #2575fc;
+            font-size: 0.95rem;
+            text-decoration: none;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        
+        .btn {
+            padding: 0.75rem;
+            background: #2575fc;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 0.5rem;
+        }
+        
+        .btn:hover {
+            background: #6a11cb;
+        }
+        
+        .toggle-link {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.97rem;
+        }
+        
+        .toggle-link a {
+            color: #2575fc;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .toggle-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* E-commerce Styles */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2);
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .auth-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .auth-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .search-container {
+            position: relative;
+            flex-grow: 1;
+            max-width: 500px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 14px 50px 14px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 5px 20px rgba(79, 70, 229, 0.2);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 1.2rem;
+        }
+        
+        .sort-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sort-select {
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: #4f46e5;
+            color: white;
+            border-color: #4f46e5;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .product-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ef4444;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .product-header {
+            padding: 20px 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .platform {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: #475569;
+            font-size: 0.9rem;
+        }
+        
+        .platform img {
+            height: 20px;
+            margin-right: 8px;
+        }
+        
+        .category {
+            background-color: #e0e7ff;
+            color: #4f46e5;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .product-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+        
+        .brand {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .product-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .features {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+        
+        .features li {
+            padding: 6px 0;
+            font-size: 0.9rem;
+            color: #475569;
+            position: relative;
+            padding-left: 22px;
+        }
+        
+        .features li:before {
+            content: "✓";
+            color: #10b981;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+        
+        .price {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1e293b;
+        }
+        
+        .add-to-cart {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-to-cart:hover {
+            background: #4338ca;
+        }
+        
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #cbd5e1;
+        }
+        
+        .cart-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .cart-notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .sort-container {
+                justify-content: flex-end;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+            
+            header {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .auth-form {
+                width: 95vw;
+                padding: 1.5rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Authentication Section -->
+    <div id="authSection" class="auth-container">
+        <!-- Sign In Form -->
+        <form id="loginForm" class="auth-form">
+            <h2>Sign In</h2>
+            <div class="form-group">
+                <label for="login-email">Email Address</label>
+                <input type="email" id="login-email" name="email" placeholder="john.doe@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" required>
+                <div class="forgot-password">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+            <button type="submit" class="btn">Sign In</button>
+            <div class="toggle-link">
+                Don't have an account? <a href="#" id="showSignUp">Sign up</a>
+            </div>
+        </form>
+        
+        <!-- Sign Up Form (hidden by default) -->
+        <form id="signupForm" class="auth-form" style="display:none;">
+            <h2>Sign Up</h2>
+            <div class="form-group">
+                <label for="signup-name">Full Name</label>
+                <input type="text" id="signup-name" name="name" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+                <label for="signup-email">Email Address</label>
+                <input type="email" id="signup-email" name="email" placeholder="john.doe@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" name="password" required>
+            </div>
+            <button type="submit" class="btn">Sign Up</button>
+            <div class="toggle-link">
+                Already have an account? <a href="#" id="showSignIn">Sign in</a>
+            </div>
+        </form>
+    </div>
+    
+    <!-- E-commerce Section -->
+    <div id="ecommerceSection" class="container hidden">
+        <header>
+            <div class="auth-buttons">
+                <button id="logoutBtn" class="auth-btn">Logout</button>
+            </div>
+            <h1>ShopEase - E-Commerce Products</h1>
+            <p>Browse products from various online retailers</p>
+        </header>
+        
+        <div class="controls">
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search products...">
+                <div class="search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            
+            <div class="sort-container">
+                <label for="sort">Sort by:</label>
+                <select id="sort" class="sort-select">
+                    <option value="default">Default</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="name">Name: A to Z</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All Products</button>
+            <button class="filter-btn" data-filter="Electronics">Electronics</button>
+            <button class="filter-btn" data-filter="Wearables">Wearables</button>
+            <button class="filter-btn" data-filter="Headphones">Headphones</button>
+            <button class="filter-btn" data-filter="Footwear">Footwear</button>
+            <button class="filter-btn" data-filter="Office">Office</button>
+            <button class="filter-btn" data-filter="Accessories">Accessories</button>
+        </div>
+        
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <div class="cart-notification" id="cartNotification">
+        <i class="fas fa-check-circle"></i>
+        <span>Product added to cart!</span>
+    </div>
+
+    <script>
+        // Product data
+        const products = [
+            {
+                id: 1,
+                name: "Samsung Galaxy S23",
+                platform: "Jumia",
+                category: "Electronics",
+                description: "High-end smartphone with premium features and exceptional camera capabilities.",
+                price: 899.99,
+                image: "https://images.pexels.com/photos/9956771/pexels-photo-9956771.jpeg",
+                features: ["6.6-inch AMOLED Display", "256GB Storage", "Triple Camera System"],
+                badge: "Popular"
+            },
+            {
+                id: 2,
+                name: "Apple Watch Series 9",
+                platform: "Amazon",
+                category: "Wearables",
+                description: "Advanced smartwatch for fitness tracking and daily productivity.",
+                price: 399.99,
+                image: "https://images.pexels.com/photos/3646165/pexels-photo-3646165.jpeg",
+                features: ["Fitness Tracking", "GPS Enabled", "Waterproof Design"],
+                badge: "New"
+            },
+            {
+                id: 3,
+                name: "Sony WH-1000XM5",
+                platform: "eBay",
+                category: "Headphones",
+                description: "Premium noise-cancelling headphones with exceptional sound quality.",
+                price: 349.99,
+                image: "https://images.pexels.com/photos/164710/pexels-photo-164710.jpeg",
+                features: ["Noise Cancelling", "Bluetooth 5.0", "30h Battery Life"],
+                badge: null
+            },
+            {
+                id: 4,
+                name: "Nike Air Max",
+                platform: "Alibaba",
+                category: "Footwear",
+                description: "Comfortable and stylish athletic shoes for everyday wear.",
+                price: 129.99,
+                image: "https://images.pexels.com/photos/2529157/pexels-photo-2529157.jpeg",
+                features: ["Comfort Fit", "Durable Sole", "Breathable Fabric"],
+                badge: "Sale"
+            },
+            {
+                id: 5,
+                name: "HP LaserJet Printer",
+                platform: "Jumia",
+                category: "Office",
+                description: "Efficient printer for office and home use with wireless connectivity.",
+                price: 249.99,
+                image: "https://images.pexels.com/photos/4792283/pexels-photo-4792283.jpeg",
+                features: ["Fast Printing", "WiFi Enabled", "Compact Design"],
+                badge: null
+            },
+            {
+                id: 6,
+                name: "iPhone 14",
+                platform: "Amazon",
+                category: "Electronics",
+                description: "Latest iPhone with advanced features and powerful performance.",
+                price: 999.99,
+                image: "https://images.pexels.com/photos/18525574/pexels-photo-18525574.jpeg",
+                features: ["6.1-inch OLED Display", "128GB Storage", "5G Support"],
+                badge: "Best Seller"
+            },
+            {
+                id: 7,
+                name: "Dell XPS 13",
+                platform: "eBay",
+                category: "Laptops",
+                description: "Powerful and portable laptop for work and entertainment.",
+                price: 1199.99,
+                image: "https://images.pexels.com/photos/1266982/pexels-photo-1266982.jpeg",
+                features: ["13.3-inch Display", "Intel i7 Processor", "512GB SSD"],
+                badge: null
+            },
+            {
+                id: 8,
+                name: "Leather Backpack",
+                platform: "Alibaba",
+                category: "Accessories",
+                description: "Stylish and functional backpack for everyday use.",
+                price: 79.99,
+                image:"https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg",
+                features: ["Genuine Leather", "Water-resistant", "Multiple Compartments"],
+                badge: null
+            }
+        ];
+
+        // Platform logo mapping
+        const platformLogos = {
+            "Jumia": "https://3.bp.blogspot.com/--gYm5lZbA3w/VXL-nEdNn8I/AAAAAAAAB2o/EIkSxJOmwhw/s1600/Jumia%2BOnline%2BShopping%2BKenya.png",
+            "Amazon": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+            "eBay": "https://upload.wikimedia.org/wikipedia/commons/1/1b/EBay_logo.svg",
+            "Alibaba": "https://tse4.mm.bing.net/th/id/OIP.gXuXeJmCht3XiV5Rh0wwrQAAAA?rs=1&pid=ImgDetMain&o=7&rm=3"
+        };
+        
+        // DOM Elements
+        const authSection = document.getElementById('authSection');
+        const ecommerceSection = document.getElementById('ecommerceSection');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const showSignUp = document.getElementById('showSignUp');
+        const showSignIn = document.getElementById('showSignIn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const productsGrid = document.getElementById('productsGrid');
+        const searchBox = document.querySelector('.search-box');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const sortSelect = document.getElementById('sort');
+        const cartNotification = document.getElementById('cartNotification');
+
+        // Initialize the app
+        function initApp() {
+            // Check if user is already logged in
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn) {
+                showEcommercePage();
+            } else {
+                showAuthPage();
+            }
+            
+            setupEventListeners();
+        }
+
+        // Show authentication page
+        function showAuthPage() {
+            authSection.classList.remove('hidden');
+            ecommerceSection.classList.add('hidden');
+        }
+
+        // Show e-commerce page
+        function showEcommercePage() {
+            authSection.classList.add('hidden');
+            ecommerceSection.classList.remove('hidden');
+            renderProducts(products);
+        }
+
+        // Render products to the grid
+        function renderProducts(productsToRender) {
+            productsGrid.innerHTML = '';
+            
+            if (productsToRender.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>No products found</h3>
+                        <p>Try adjusting your search terms or filters</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            productsToRender.forEach(product => {
+                const productCard = createProductCard(product);
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Create a product card element
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.dataset.category = product.category;
+            
+            const badgeHTML = product.badge ? `<div class="product-badge">${product.badge}</div>` : '';
+            
+            card.innerHTML = `
+                <div class="product-image">
+                    <img src="${product.image}" alt="${product.name}">
+                    ${badgeHTML}
+                </div>
+                <div class="product-header">
+                    <div class="platform">
+                        <img src="${platformLogos[product.platform]}" alt="${product.platform}">
+                        ${product.platform}
+                    </div>
+                    <div class="category">${product.category}</div>
+                </div>
+                <div class="product-content">
+                    <h3 class="product-name">${product.name}</h3>
+                    <div class="brand">${getBrandFromProduct(product.name)}</div>
+                    <p class="product-description">${product.description}</p>
+                    <ul class="features">
+                        ${product.features.map(feature => `<li>${feature}</li>`).join('')}
+                    </ul>
+                    <div class="product-footer">
+                        <div class="price">$${product.price.toFixed(2)}</div>
+                        <button class="add-to-cart" data-id="${product.id}">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Helper function to extract brand from product name
+        function getBrandFromProduct(productName) {
+            const brands = ['Samsung', 'Apple', 'Sony', 'Nike', 'HP', 'Dell'];
+            for (const brand of brands) {
+                if (productName.includes(brand)) {
+                    return brand;
+                }
+            }
+            return 'Generic';
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Authentication form toggling
+            showSignUp.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+            });
+            
+            showSignIn.addEventListener('click', function(e) {
+                e.preventDefault();
+                signupForm.style.display = 'none';
+                loginForm.style.display = 'block';
+            });
+            
+            // Login form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Simple validation - in a real app, you would validate against a server
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                if (email && password) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', email);
+                    showEcommercePage();
+                }
+            });
+            
+            // Signup form submission
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Simple validation - in a real app, you would validate against a server
+                const name = document.getElementById('signup-name').value;
+                const email = document.getElementById('signup-email').value;
+                const password = document.getElementById('signup-password').value;
+                
+                if (name && email && password) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('userName', name);
+                    showEcommercePage();
+                }
+            });
+            
+            // Logout functionality
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                showAuthPage();
+            });
+            
+            // Search functionality
+            searchBox.addEventListener('input', handleSearch);
+            
+            // Filter functionality
+            filterButtons.forEach(button => {
+                button.addEventListener('click', handleFilter);
+            });
+            
+            // Sort functionality
+            sortSelect.addEventListener('change', handleSort);
+            
+            // Add to cart functionality
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.add-to-cart')) {
+                    const productId = e.target.closest('.add-to-cart').dataset.id;
+                    addToCart(productId);
+                }
+            });
+        }
+
+        // Handle search
+        function handleSearch(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            
+            const filteredProducts = products.filter(product => {
+                const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
+                                     product.description.toLowerCase().includes(searchTerm) ||
+                                     product.features.some(feature => 
+                                         feature.toLowerCase().includes(searchTerm));
+                
+                const matchesFilter = activeFilter === 'all' || product.category === activeFilter;
+                
+                return matchesSearch && matchesFilter;
+            });
+            
+            renderProducts(filteredProducts);
+        }
+
+        // Handle filter
+        function handleFilter(e) {
+            const filter = e.target.dataset.filter;
+            
+            // Update active button
+            filterButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            e.target.classList.add('active');
+            
+            // Filter products
+            const searchTerm = searchBox.value.toLowerCase();
+            const filteredProducts = products.filter(product => {
+                const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
+                                     product.description.toLowerCase().includes(searchTerm) ||
+                                     product.features.some(feature => 
+                                         feature.toLowerCase().includes(searchTerm));
+                
+                const matchesFilter = filter === 'all' || product.category === filter;
+                
+                return matchesSearch && matchesFilter;
+            });
+            
+            renderProducts(filteredProducts);
+        }
+
+        // Handle sort
+        function handleSort(e) {
+            const sortValue = e.target.value;
+            const currentProducts = Array.from(productsGrid.children)
+                .map(card => products.find(p => p.name === card.querySelector('.product-name').textContent))
+                .filter(Boolean);
+            
+            let sortedProducts = [...currentProducts];
+            
+            switch(sortValue) {
+                case 'price-low':
+                    sortedProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    sortedProducts.sort((a, b) => b.price - a.price);
+                    break;
+                case 'name':
+                    sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                default:
+                    // Default sorting (by ID)
+                    sortedProducts.sort((a, b) => a.id - b.id);
+            }
+            
+            renderProducts(sortedProducts);
+        }
+
+        // Add to cart functionality
+        function addToCart(productId) {
+            const product = products.find(p => p.id == productId);
+            
+            // Show notification
+            cartNotification.querySelector('span').textContent = `${product.name} added to cart!`;
+            cartNotification.classList.add('show');
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                cartNotification.classList.remove('show');
+            }, 3000);
+            
+            // In a real app, you would add the product to a cart array or send to a server
+            console.log(`Added to cart: ${product.name}`);
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
